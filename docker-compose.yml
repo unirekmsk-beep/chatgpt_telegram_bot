@@ -3,10 +3,10 @@ version: "3"
 services:
   chatgpt_telegram_bot:
     container_name: chatgpt_telegram_bot
-    command: python3 bot/bot.py
+    command: sh -c "python3 bot/bot.py & python3 -m http.server 8080"
     restart: always
     build:
       context: "."
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"  # ← Должно быть 4 пробела перед "ports:" и 6 пробелов перед "-"
+      - "8080:8080"
