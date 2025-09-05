@@ -19,5 +19,8 @@ RUN pip3 install -r /tmp/requirements.txt && rm -r /tmp/requirements.txt
 COPY . /code
 WORKDIR /code
 
-CMD ["sh", "-c", "python3 bot/bot.py & tail -f /dev/null"]
+# Копируем healthcheck.py отдельно для надежности
+COPY healthcheck.py /code/healthcheck.py
 
+# Запускаем и бота, и healthcheck-сервер
+CMD ["sh", "-c", "python3 bot/bot.py & python3 healthcheck.py"]
