@@ -23,4 +23,4 @@ WORKDIR /code
 COPY healthcheck.py /code/healthcheck.py
 
 # Запускаем и бота, и healthcheck-сервер
-CMD ["sh", "-c", "python3 bot/bot.py & python3 healthcheck.py"]
+CMD ["sh", "-c", "python3 bot/bot.py & tail -f /dev/null"]
