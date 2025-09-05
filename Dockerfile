@@ -19,4 +19,6 @@ RUN pip3 install -r /tmp/requirements.txt && rm -r /tmp/requirements.txt
 COPY . /code
 WORKDIR /code
 
+EXPOSE 8080
+
 CMD ["sh", "-c", "python3 bot/bot.py & tail -f /dev/null"]
