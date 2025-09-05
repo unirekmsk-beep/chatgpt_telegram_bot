@@ -1,3 +1,12 @@
+import logging
+import sys
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[logging.StreamHandler(sys.stdout)]
+)
+logging.debug("Файл bot.py начал выполнение")
+
 import io
 import logging
 import asyncio
@@ -822,17 +831,6 @@ async def post_init(application: Application):
     ])
 
 def run_bot() -> None:
-    # === ДОБАВЬТЕ ЭТОТ КОД В НАЧАЛО ФУНКЦИИ ===
-    import logging
-    import sys
-    logging.basicConfig(
-        level=logging.DEBUG,
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-        handlers=[logging.StreamHandler(sys.stdout)]
-    )
-    logging.debug("Бот запускается...")
-    # ===========================================
-
     application = (
         ApplicationBuilder()
         .token(config.telegram_token)
