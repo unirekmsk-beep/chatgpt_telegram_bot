@@ -8,5 +8,5 @@ services:
     build:
       context: "."
       dockerfile: Dockerfile
- ports:
-      - "8080:8080"
+    ports:
+      - "8080:8080"  # ← Должно быть 4 пробела перед "ports:" и 6 пробелов перед "-"
