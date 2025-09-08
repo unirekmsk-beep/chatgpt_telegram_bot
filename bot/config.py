@@ -1,6 +1,11 @@
 import yaml
 import dotenv
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+
+# Загружаем переменные из .env файла в корне репозитория
+load_dotenv()
 
 config_dir = Path(__file__).parent.parent.resolve() / "config"
 
@@ -8,7 +13,7 @@ config_dir = Path(__file__).parent.parent.resolve() / "config"
 with open(config_dir / "config.yml", 'r') as f:
     config_yaml = yaml.safe_load(f)
 
-# load .env config
+# load .env config (старый файл config.env - оставляем для обратной совместимости)
 config_env = dotenv.dotenv_values(config_dir / "config.env")
 
 # config parameters
@@ -21,7 +26,8 @@ enable_message_streaming = config_yaml.get("enable_message_streaming", True)
 return_n_generated_images = config_yaml.get("return_n_generated_images", 1)
 image_size = config_yaml.get("image_size", "512x512")
 n_chat_modes_per_page = config_yaml.get("n_chat_modes_per_page", 5)
-import os
+
+# Получаем URI из переменных окружения (приоритет у .env файла в корне)
 mongodb_uri = os.getenv("MONGODB_URI")
 
 # chat_modes
