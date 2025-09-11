@@ -9,6 +9,12 @@ import config
 
 class Database:
     def __init__(self):
+        # ДОБАВЬТЕ ЭТИ ДВЕ СТРОКИ ДЛЯ ДИАГНОСТИКИ
+        print(f"DEBUG: MongoDB URI from config = {config.mongodb_uri}")
+        print(f"DEBUG: Type of URI = {type(config.mongodb_uri)}")
+        
+        self.client = pymongo.MongoClient(config.mongodb_uri)
+        self.db = self.client["chatgpt_telegram_bot"]
         self.client = pymongo.MongoClient(config.mongodb_uri)
         self.db = self.client["chatgpt_telegram_bot"]
 
