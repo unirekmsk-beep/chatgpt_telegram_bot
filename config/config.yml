@@ -10,7 +10,3 @@ enable_message_streaming: true
 chatgpt_price_per_1000_tokens: 0.002
 gpt_price_per_1000_tokens: 0.02
 whisper_price_per_1_min: 0.006
-# ДОБАВЬТЕ ЭТОТ БЛОК ↓
-mongodb:
-  host: "127.0.0.1"
-  port: 27017
