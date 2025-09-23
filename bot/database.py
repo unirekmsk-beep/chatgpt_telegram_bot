@@ -9,6 +9,10 @@ import config
 
 class Database:
     def __init__(self):
+        # ДОБАВЬТЕ ЭТИ ТРИ СТРОКИ ↓
+        print("=== DEBUG DATABASE START ===")
+        print(f"URI: {config.mongodb_uri}")
+        print("=== DEBUG DATABASE END ===")
         print(f"DEBUG: FINAL URI = {config.mongodb_uri}")  # Добавьте эту строк
         self.client = pymongo.MongoClient(config.mongodb_uri)
         self.db = self.client["tg_bot_db"]
