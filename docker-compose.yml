@@ -3,10 +3,13 @@ version: "3"
 services:
   chatgpt_telegram_bot:
     container_name: chatgpt_telegram_bot
-    command: tail -f /dev/null
+    command: python3 bot/bot.py  # ← ИЗМЕНИТЕ команду!
     restart: always
     build:
       context: "."
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
+    # ДОБАВЬТЕ ЭТУ СЕКЦИЮ ↓
+    extra_hosts:
+      - "managed-410815-5699231:192.168.0.4"
