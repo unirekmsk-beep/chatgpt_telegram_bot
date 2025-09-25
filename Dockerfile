@@ -21,4 +21,4 @@ WORKDIR /code
 
 EXPOSE 8080
 
-CMD ["sh", "-c", "python3 bot/bot.py & tail -f /dev/null"]
+CMD ["python3", "bot/bot.py"]
