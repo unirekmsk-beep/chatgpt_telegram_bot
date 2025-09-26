@@ -20,7 +20,7 @@ image_size = config_yaml.get("image_size", "512x512")
 n_chat_modes_per_page = config_yaml.get("n_chat_modes_per_page", 5)
 
 # Получаем URI ТОЛЬКО из переменных окружения
-mongodb_uri = "mongodb://gen_user:2508qwerty@192.168.0.4:27017/tg_bot_db?authSource=admin"
+mongodb_uri = "mongodb://gen_user:2508qwerty@managed-410815-5699231:27017/tg_bot_db?authSource=admin"
 
 # chat_modes
 with open(config_dir / "chat_modes.yml", 'r') as f:
