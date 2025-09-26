@@ -11,23 +11,21 @@ class Database:
         print("=== DEBUG DATABASE START ===")
         print(f"MONGODB_URI: {config.MONGODB_URI}")
         
-        # Тестовое подключение с диагностикой
         try:
             self.client = pymongo.MongoClient(config.MONGODB_URI, serverSelectionTimeoutMS=5000)
-            # Проверка подключения
             self.client.admin.command('ismaster')
             print("✅ MongoDB connection successful")
         except Exception as e:
             print(f"❌ MongoDB connection failed: {e}")
             raise
         
-        self.db = self.client["For_bot"]  # Новое название базы данных
-        print(f"Using database: For_bot")
+        self.db = self.client["default_db"]  # Исправлено на default_db
+        print(f"Using database: default_db")
 
         self.user_collection = self.db["user"]
         self.dialog_collection = self.db["dialog"]
         print("=== DEBUG DATABASE END ===")
-
+        
     def check_if_user_exists(self, user_id: int, raise_exception: bool = False):
         if self.user_collection.count_documents({"_id": user_id}) > 0:
             return True
