@@ -33,12 +33,47 @@ import openai_utils
 
 import base64
 
+print("🚀 BOT STARTING... Testing imports...")
+
 # setup
-db = database.Database()
 logger = logging.getLogger(__name__)
 
 user_semaphores = {}
 user_tasks = {}
+
+# ИНИЦИАЛИЗАЦИЯ БД С ДИАГНОСТИКОЙ
+try:
+    print("🔄 Initializing database...")
+    db = database.Database()
+    print("✅ Database initialized successfully")
+except Exception as e:
+    print(f"❌ Database initialization failed: {e}")
+    print("⚠️ Bot will start without database functionality")
+    # Создаем заглушку чтобы бот мог запуститься
+    class FakeDB:
+        def check_if_user_exists(self, *args, **kwargs): 
+            print("⚠️ FakeDB: check_if_user_exists called")
+            return True
+        def add_new_user(self, *args, **kwargs): 
+            print("⚠️ FakeDB: add_new_user called")
+        def get_user_attribute(self, *args, **kwargs): 
+            print("⚠️ FakeDB: get_user_attribute called")
+            return None
+        def set_user_attribute(self, *args, **kwargs): 
+            print("⚠️ FakeDB: set_user_attribute called")
+        def start_new_dialog(self, *args, **kwargs): 
+            print("⚠️ FakeDB: start_new_dialog called")
+        def get_dialog_messages(self, *args, **kwargs): 
+            print("⚠️ FakeDB: get_dialog_messages called")
+            return []
+        def set_dialog_messages(self, *args, **kwargs): 
+            print("⚠️ FakeDB: set_dialog_messages called")
+        def update_n_used_tokens(self, *args, **kwargs): 
+            print("⚠️ FakeDB: update_n_used_tokens called")
+    
+    db = FakeDB()
+
+print("🎉 All imports and initialization completed!")
 
 HELP_MESSAGE = """Commands:
 ⚪ /retry – Regenerate last bot answer
@@ -831,6 +866,8 @@ async def post_init(application: Application):
     ])
 
 def run_bot() -> None:
+    print("🤖 Starting bot application...")
+    
     application = (
         ApplicationBuilder()
         .token(config.telegram_token)
@@ -841,7 +878,9 @@ def run_bot() -> None:
         .post_init(post_init)
         .build()
     )
-
+    
+    print("✅ Application built successfully")
+    
     # add handlers
     user_filter = filters.ALL
     if len(config.allowed_telegram_usernames) > 0:
@@ -876,9 +915,23 @@ def run_bot() -> None:
 
     application.add_error_handler(error_handle)
 
+    print("🎛️ All handlers added, starting polling...")
+    
     # start the bot
     application.run_polling()
 
-
 if __name__ == "__main__":
-    run_bot()
+    print("=" * 50)
+    print("🚀 TELEGRAM BOT STARTING")
+    print("=" * 50)
+    print(f"Token: {config.telegram_token[:10]}...")
+    print(f"OpenAI Key: {config.openai_api_key[:10]}...")
+    print(f"MongoDB URI: {config.MONGODB_URI[:30]}...")
+    print("=" * 50)
+    
+    try:
+        run_bot()
+    except Exception as e:
+        print(f"💥 CRITICAL ERROR: {e}")
+        import traceback
+        traceback.print_exc()
