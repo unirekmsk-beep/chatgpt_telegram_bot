@@ -41,39 +41,27 @@ logger = logging.getLogger(__name__)
 user_semaphores = {}
 user_tasks = {}
 
-# ИНИЦИАЛИЗАЦИЯ БД С ДИАГНОСТИКОЙ
-try:
-    print("🔄 Initializing database...")
-    db = database.Database()
-    print("✅ Database initialized successfully")
-except Exception as e:
-    print(f"❌ Database initialization failed: {e}")
-    print("⚠️ Bot will start without database functionality")
-    # Создаем заглушку чтобы бот мог запуститься
-    class FakeDB:
-        def check_if_user_exists(self, *args, **kwargs): 
-            print("⚠️ FakeDB: check_if_user_exists called")
-            return True
-        def add_new_user(self, *args, **kwargs): 
-            print("⚠️ FakeDB: add_new_user called")
-        def get_user_attribute(self, *args, **kwargs): 
-            print("⚠️ FakeDB: get_user_attribute called")
-            return None
-        def set_user_attribute(self, *args, **kwargs): 
-            print("⚠️ FakeDB: set_user_attribute called")
-        def start_new_dialog(self, *args, **kwargs): 
-            print("⚠️ FakeDB: start_new_dialog called")
-        def get_dialog_messages(self, *args, **kwargs): 
-            print("⚠️ FakeDB: get_dialog_messages called")
-            return []
-        def set_dialog_messages(self, *args, **kwargs): 
-            print("⚠️ FakeDB: set_dialog_messages called")
-        def update_n_used_tokens(self, *args, **kwargs): 
-            print("⚠️ FakeDB: update_n_used_tokens called")
-    
-    db = FakeDB()
+# ВРЕМЕННО: ЗАГЛУШКА БД ВМЕСТО РЕАЛЬНОЙ ИНИЦИАЛИЗАЦИИ
+class FakeDB:
+    def check_if_user_exists(self, *args, **kwargs): 
+        return True
+    def add_new_user(self, *args, **kwargs): 
+        pass
+    def get_user_attribute(self, *args, **kwargs): 
+        return None
+    def set_user_attribute(self, *args, **kwargs): 
+        pass
+    def start_new_dialog(self, *args, **kwargs): 
+        pass
+    def get_dialog_messages(self, *args, **kwargs): 
+        return []
+    def set_dialog_messages(self, *args, **kwargs): 
+        pass
+    def update_n_used_tokens(self, *args, **kwargs): 
+        pass
 
-print("🎉 All imports and initialization completed!")
+db = FakeDB()
+print("✅ FakeDB initialized - running without real database")
 
 HELP_MESSAGE = """Commands:
 ⚪ /retry – Regenerate last bot answer
