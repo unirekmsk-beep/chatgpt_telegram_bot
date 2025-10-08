@@ -21,4 +21,4 @@ WORKDIR /code
 
 EXPOSE 8080
 
-CMD ["python", "test_db.py"]
+CMD ["python", "test_database_import.py"]
