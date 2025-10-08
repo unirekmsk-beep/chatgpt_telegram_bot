@@ -22,4 +22,4 @@ WORKDIR /code
 EXPOSE 8080
 
 # Запускаем тестового бота
-CMD ["python3", "test_bot.py"]
+CMD ["python", "test_bot.py"]
