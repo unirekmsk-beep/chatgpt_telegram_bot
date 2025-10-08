@@ -8,8 +8,8 @@ services:
     build: .
     ports:
       - "8080:8080"
-    extra_hosts:
-      - "managed-410815-5699231:192.168.0.4"
+    #extra_hosts:
+    #  - "managed-410815-5699231:192.168.0.4"
     # Добавьте для диагностики
     environment:
       - PYTHONUNBUFFERED=1
