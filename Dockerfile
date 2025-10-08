@@ -21,4 +21,5 @@ WORKDIR /code
 
 EXPOSE 8080
 
-CMD ["python3", "bot/bot.py"]
+# ВРЕМЕННО запускаем тестовый файл
+CMD ["python3", "test_bot.py"]
