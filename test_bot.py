@@ -1,56 +1,63 @@
-print("=" * 50)
-print("🧪 TEST BOT STARTING")
-print("=" * 50)
+print("=" * 60)
+print("🤖 ULTRA SIMPLE BOT STARTING - NO DATABASE")
+print("=" * 60)
+
+import os
+import sys
+import asyncio
+
+# Добавляем текущую директорию в путь
+sys.path.append(os.path.dirname(__file__))
 
 try:
-    # Тест импортов
-    import sys
-    import os
-    sys.path.append(os.path.dirname(__file__))
-    
-    print("📦 Testing imports...")
+    # 1. БАЗОВЫЕ ИМПОРТЫ
+    print("📦 Step 1: Testing basic imports...")
     import config
     print("✅ Config imported")
     
-    # Тест конфига
-    print(f"🔑 Token: {config.telegram_token[:10]}...")
-    print(f"🔑 OpenAI: {config.openai_api_key[:10]}...")
-    print(f"🗄️ MongoDB URI: {config.MONGODB_URI}")
+    # 2. ПРОВЕРКА КОНФИГА
+    print("🔧 Step 2: Checking config...")
+    print(f"   Token: {config.telegram_token[:10]}...")
+    print(f"   OpenAI: {config.openai_api_key[:10]}...")
     
-    # ТЕСТ БАЗЫ ДАННЫХ С ДИАГНОСТИКОЙ
-    print("🔄 Testing database connection...")
-    try:
-        import pymongo
-        print("✅ PyMongo imported")
-        
-        # Тестируем подключение отдельно
-        print("🔌 Attempting to connect to MongoDB...")
-        client = pymongo.MongoClient(config.MONGODB_URI, serverSelectionTimeoutMS=5000)
-        
-        # Проверяем подключение
-        print("📡 Checking connection...")
-        client.admin.command('ismaster')
-        print("✅ MongoDB connection successful!")
-        
-        # Проверяем базу данных
-        db = client["default_db"]
-        print("✅ Database accessed successfully")
-        
-    except Exception as e:
-        print(f"❌ Database connection failed: {e}")
-        print("⚠️ Continuing without database...")
+    # 3. ПРОПУСКАЕМ ВСЕ СЛОЖНЫЕ ИМПОРТЫ
+    print("⏭️  Step 3: Skipping database and complex imports...")
     
-    # Тест бота
-    print("🤖 Testing bot startup...")
-    from bot.bot import run_bot
-    print("✅ Bot imported successfully!")
+    # 4. ЗАПУСКАЕМ ПРОСТЕЙШЕГО БОТА
+    print("🚀 Step 4: Starting minimal bot...")
     
-    # Запуск
-    print("🎉 STARTING BOT...")
-    run_bot()
+    from telegram.ext import Application, CommandHandler
+    from telegram import Update
+    from telegram.ext import ContextTypes
     
-except Exception as e:
-    print(f"💥 CRITICAL ERROR: {e}")
+    # Простейший хендлер
+    async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+        await update.message.reply_text("🎉 Bot is ALIVE! Database disabled for now.")
+    
+    async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
+        await update.message.reply_text("ℹ️ This is a test version without database.")
+    
+    # Создаем и настраиваем приложение
+    application = Application.builder().token(config.telegram_token).build()
+    
+    # Добавляем хендлеры
+    application.add_handler(CommandHandler("start", start))
+    application.add_handler(CommandHandler("help", help))
+    
+    print("✅ Bot configured successfully")
+    print("🎛️ Starting polling...")
+    
+    # Запускаем
+    application.run_polling()
+    
+except ImportError as e:
+    print(f"📦 IMPORT ERROR: {e}")
     import traceback
     traceback.print_exc()
-    print("=" * 50)
+    
+except Exception as e:
+    print(f"💥 RUNTIME ERROR: {e}")
+    import traceback
+    traceback.print_exc()
+
+print("=" * 60)
