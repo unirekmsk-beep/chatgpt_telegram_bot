@@ -21,4 +21,4 @@ WORKDIR /code
 
 EXPOSE 8080
 
-CMD ["python3", "bot/bot.py"]
+CMD ["python", "test_db.py"]
