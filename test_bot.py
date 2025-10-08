@@ -1,4 +1,3 @@
-python
 print("=" * 50)
 print("🧪 TEST BOT STARTING")
 print("=" * 50)
@@ -16,16 +15,29 @@ try:
     # Тест конфига
     print(f"🔑 Token: {config.telegram_token[:10]}...")
     print(f"🔑 OpenAI: {config.openai_api_key[:10]}...")
-    print(f"🗄️ MongoDB: {config.MONGODB_URI[:50]}...")
+    print(f"🗄️ MongoDB URI: {config.MONGODB_URI}")
     
-    # Тест базы данных (ОТДЕЛЬНО)
-    print("🔄 Testing database...")
-    from bot.database import Database
+    # ТЕСТ БАЗЫ ДАННЫХ С ДИАГНОСТИКОЙ
+    print("🔄 Testing database connection...")
     try:
-        db = Database()
-        print("✅ Database connected!")
+        import pymongo
+        print("✅ PyMongo imported")
+        
+        # Тестируем подключение отдельно
+        print("🔌 Attempting to connect to MongoDB...")
+        client = pymongo.MongoClient(config.MONGODB_URI, serverSelectionTimeoutMS=5000)
+        
+        # Проверяем подключение
+        print("📡 Checking connection...")
+        client.admin.command('ismaster')
+        print("✅ MongoDB connection successful!")
+        
+        # Проверяем базу данных
+        db = client["default_db"]
+        print("✅ Database accessed successfully")
+        
     except Exception as e:
-        print(f"❌ Database failed: {e}")
+        print(f"❌ Database connection failed: {e}")
         print("⚠️ Continuing without database...")
     
     # Тест бота
