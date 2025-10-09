@@ -41,27 +41,73 @@ logger = logging.getLogger(__name__)
 user_semaphores = {}
 user_tasks = {}
 
+from datetime import datetime, timedelta
+
 # ВРЕМЕННО: ЗАГЛУШКА БД ВМЕСТО РЕАЛЬНОЙ ИНИЦИАЛИЗАЦИИ
 class FakeDB:
-    def check_if_user_exists(self, *args, **kwargs): 
+    def __init__(self):
+        self.user_data = {}
+        self.dialog_data = {}
+    
+    def check_if_user_exists(self, user_id: int, raise_exception: bool = False):
         return True
-    def add_new_user(self, *args, **kwargs): 
-        pass
-    def get_user_attribute(self, *args, **kwargs): 
+    
+    def add_new_user(self, user_id: int, chat_id: int, username: str = "", first_name: str = "", last_name: str = ""):
+        if user_id not in self.user_data:
+            self.user_data[user_id] = {
+                "last_interaction": datetime.now(),
+                "first_seen": datetime.now(),
+                "current_dialog_id": None,
+                "current_chat_mode": "assistant",
+                "current_model": "gpt-3.5-turbo",
+                "n_used_tokens": {},
+                "n_generated_images": 0,
+                "n_transcribed_seconds": 0.0
+            }
+    
+    def get_user_attribute(self, user_id: int, key: str):
+        if user_id in self.user_data:
+            return self.user_data[user_id].get(key)
+        # Возвращаем реалистичные значения по умолчанию
+        if key == "last_interaction":
+            return datetime.now() - timedelta(days=1)  # Вчера
+        elif key == "current_dialog_id":
+            return None
+        elif key == "current_chat_mode":
+            return "assistant"
+        elif key == "current_model":
+            return "gpt-3.5-turbo"
+        elif key == "n_used_tokens":
+            return {}
+        elif key == "n_generated_images":
+            return 0
+        elif key == "n_transcribed_seconds":
+            return 0.0
         return None
-    def set_user_attribute(self, *args, **kwargs): 
-        pass
-    def start_new_dialog(self, *args, **kwargs): 
-        pass
-    def get_dialog_messages(self, *args, **kwargs): 
-        return []
-    def set_dialog_messages(self, *args, **kwargs): 
-        pass
-    def update_n_used_tokens(self, *args, **kwargs): 
-        pass
+    
+    def set_user_attribute(self, user_id: int, key: str, value: any):
+        if user_id not in self.user_data:
+            self.add_new_user(user_id, user_id)  # Создаем пользователя
+        self.user_data[user_id][key] = value
+    
+    def start_new_dialog(self, user_id: int):
+        dialog_id = f"fake_dialog_{user_id}_{datetime.now().timestamp()}"
+        if user_id not in self.user_data:
+            self.add_new_user(user_id, user_id)
+        self.user_data[user_id]["current_dialog_id"] = dialog_id
+        return dialog_id
+    
+    def get_dialog_messages(self, user_id: int, dialog_id: str = None):
+        return []  # Пустой список сообщений
+    
+    def set_dialog_messages(self, user_id: int, dialog_messages: list, dialog_id: str = None):
+        pass  # Игнорируем для заглушки
+    
+    def update_n_used_tokens(self, user_id: int, model: str, n_input_tokens: int, n_output_tokens: int):
+        pass  # Игнорируем для заглушки
 
 db = FakeDB()
-print("✅ FakeDB initialized - running without real database")
+print("✅ Improved FakeDB initialized - running without real database")
 
 HELP_MESSAGE = """Commands:
 ⚪ /retry – Regenerate last bot answer
