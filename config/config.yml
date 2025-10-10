@@ -1,6 +1,6 @@
-telegram_token: "8219804133:AAHxiQ4glaOB8vxAjYBXPzD5Yrk6myAee0M"
-openai_api_key: "sk-CcWN9bVQY1sxzqZYxL8hsg0zTTRH7qzV"
-openai_api_base: "https://api.proxyapi.ru/openai/v1"
+telegram_token: ""
+openai_api_key: ""
+openai_api_base: ""
 allowed_telegram_usernames: []
 new_dialog_timeout: 600
 return_n_generated_images: 1
